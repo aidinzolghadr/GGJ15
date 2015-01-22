@@ -19,7 +19,6 @@ public class RotateAround : MonoBehaviour
 		if (other.tag == "Planet")
 		{
 			other.gameObject.GetComponent<MoodMeter>().IncreaseMood();
-
 		}
 	}
 
