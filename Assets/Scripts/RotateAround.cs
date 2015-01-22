@@ -14,8 +14,6 @@ public class RotateAround : MonoBehaviour
 
 	void OnTriggerEnter2D (Collider2D other)
 	{
-//		Debug.Log("increasing");
-
 		if (other.tag == "Planet")
 		{
 			other.gameObject.GetComponent<MoodMeter>().IncreaseMood();
@@ -26,8 +24,7 @@ public class RotateAround : MonoBehaviour
 	{
 		if (other.tag == "Planet")
 		{
-			other.gameObject.GetComponent<MoodMeter>().DecreaseMood();
-			
+			other.gameObject.GetComponent<MoodMeter>().ResetMoodMultiplier();
 		}
 	}
 

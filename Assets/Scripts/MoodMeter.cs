@@ -6,47 +6,52 @@ public class MoodMeter : MonoBehaviour
 	public float MaxMood = 100;
 	public float CurrentMood = 40;
 
-	public float MoodIncreaseAmountPerSecond = 3;
-	public float MoodDecrementPerSecond = -1;
-
 	private float MoodDelta = -1;
+	private GUIText _myGUItext;
+
+	private float _maxScale = 0.45f;
+	private float _minScale = 0.15f;
 
 	public void IncreaseMood ()
 	{
-		MoodDelta = MoodIncreaseAmountPerSecond;
-//		CurrentMood = CurrentMood > MaxMood ? MaxMood : CurrentMood;
+		MoodDelta = SpawnManager.Instance.MoodIncreaseAmountPerSecond;
 	}
 
-	public void DecreaseMood ()
+	public void ResetMoodMultiplier ( )
 	{
-		MoodDelta = MoodDecrementPerSecond;
-//		CurrentMood = CurrentMood <= 0 ? 0 : CurrentMood;
+		MoodDelta = SpawnManager.Instance.MoodDecrementPerSecond;
 	}
-
-//	void OnTriggerStay2D (Collider2D other)
-//	{
-//
-//	}
-
-//	void OnTriggerExit2D (Collider2D other)
-//	{
-//
-//	}
 
 	void UpdateMood()
 	{
 		CurrentMood += MoodDelta * Time.deltaTime;
+
+		// Clamps
+		CurrentMood = CurrentMood > MaxMood ? MaxMood : CurrentMood;
+		CurrentMood = CurrentMood <= 0 ? 0 : CurrentMood;
+	}
+
+	void Awake()
+	{
+		_myGUItext = transform.GetComponentInChildren<GUIText>();
 	}
 
 	void Start ()
 	{
-		MoodDelta = MoodDecrementPerSecond;
+		ResetMoodMultiplier();
 	}
 
-	// Update is called once per frame
 	void Update ()
 	{
 		UpdateMood();
-		Debug.Log(CurrentMood);
+		_myGUItext.text = ((int)CurrentMood).ToString();
+
+		float normalMaxScale = _maxScale - _minScale;
+
+		float scale = ( CurrentMood * normalMaxScale ) / MaxMood;
+		scale += _minScale;
+		scale = (scale < _minScale) ? _minScale : scale;
+
+		transform.localScale =  new Vector3 ( scale, scale, scale);
 	}
 }

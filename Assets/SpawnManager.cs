@@ -3,24 +3,38 @@ using System.Collections;
 
 public class SpawnManager : MonoBehaviour
 {
+	// Singleton
+	private static SpawnManager instance = null;
+	public static SpawnManager Instance { get { return instance; } }
+
+	public float MoodIncreaseAmountPerSecond = 3;
+	public float MoodDecrementPerSecond = -1;
+
+
 	// TODO: Tutorial wave
 
 	public Wave[] StartWave = new Wave[]
 	{
-		/* 0 */	new Wave { Positions = {1}, MoodMin =  50,	MoodMax = 90},
+		/* 0 */	new Wave { Positions =	new int[] {1},	MoodMin =  50,	MoodMax = 90},
 	};
+
+	//TODO: Normal wave
 
 	public int WaveIndex = 0;
 
-	//TODO:	
+	public MoodMeter[] Planets;
 
-	// Use this for initialization
+	void Awake()
+	{
+		// Singleton
+		instance = this;
+	}
+
 	void Start ()
 	{
 	
 	}
 	
-	// Update is called once per frame
 	void Update ()
 	{
 		
