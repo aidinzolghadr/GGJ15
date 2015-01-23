@@ -6,8 +6,8 @@ public class RotateAround : MonoBehaviour
 	public float RotationSpeed;
 	public Vector3 axis = -Vector3.forward;
 
-	public float SpeedMultiplier;
-	public float SpeedDivisioner;
+	public float MaxSpeed;
+	public float SpeedStep;
 
 	private Transform targetTransform;
 	private Vector3 desiredPosition;
@@ -37,13 +37,41 @@ public class RotateAround : MonoBehaviour
 	{
 		float tempRotateSpeed = RotationSpeed;
 
-		if (Input.GetKey(KeyCode.UpArrow))
+//		if (Input.GetKey(KeyCode.UpArrow))
+//		{
+//			tempRotateSpeed *= SpeedMultiplier;
+//		}
+//		else if (Input.GetKey(KeyCode.DownArrow))
+//		{
+//			tempRotateSpeed *= SpeedDivisioner;
+//		}
+
+		if (Input.GetKey(KeyCode.LeftArrow))
 		{
-			tempRotateSpeed *= SpeedMultiplier;
+			RotationSpeed -= SpeedStep;
+			RotationSpeed = (RotationSpeed < -MaxSpeed) ? -MaxSpeed : RotationSpeed;
 		}
-		else if (Input.GetKey(KeyCode.DownArrow))
+		else if (Input.GetKey(KeyCode.RightArrow))
 		{
-			tempRotateSpeed *= SpeedDivisioner;
+			RotationSpeed += SpeedStep;
+			RotationSpeed = (RotationSpeed > MaxSpeed) ? MaxSpeed : RotationSpeed;
+		}
+		else if ( ! Input.anyKeyDown)
+		{
+			if (RotationSpeed > 0)
+			{
+				RotationSpeed -= 2;
+				if (RotationSpeed < 0)
+					RotationSpeed = 0;
+			}
+
+			else if (RotationSpeed < 0)
+			{
+				RotationSpeed += 2;
+				if (RotationSpeed > 0)
+					RotationSpeed = 0;
+			}
+//			RotationSpeed 
 		}
 
 		transform.RotateAround (targetTransform.position, axis, tempRotateSpeed * Time.deltaTime);

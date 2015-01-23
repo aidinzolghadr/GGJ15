@@ -22,6 +22,11 @@ public class MoodMeter : MonoBehaviour
 		MoodDelta = SpawnManager.Instance.MoodDecrementPerSecond;
 	}
 
+	public void Reset()
+	{
+		CurrentMood = 40;
+	}
+
 	void UpdateMood()
 	{
 		CurrentMood += MoodDelta * Time.deltaTime;
