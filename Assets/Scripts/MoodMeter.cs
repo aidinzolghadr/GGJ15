@@ -35,26 +35,26 @@ public class MoodMeter : MonoBehaviour
 
 	void updateArtBasedOnMood()
 	{
-		_spriteRenderer.sprite = AnimationManager.Instance.GetTreeOfThisIndexOfThisMoodValue( TreeID, (int) CurrentMood);
 
 		if (CurrentMood <= 20)
 		{
+			_spriteRenderer.sprite = AnimationManager.Instance.GetTreeSprite( TreeID, 0);
 		}
 		else if (CurrentMood < 40)
 		{
-
+			_spriteRenderer.sprite = AnimationManager.Instance.GetTreeSprite( TreeID, 1);
 		}
 		else if (CurrentMood < 60)
 		{
-
+			_spriteRenderer.sprite = AnimationManager.Instance.GetTreeSprite( TreeID, 2);
 		}
 		else if (CurrentMood < 80)
 		{
-
+			_spriteRenderer.sprite = AnimationManager.Instance.GetTreeSprite( TreeID, 3);
 		}
 		else if (CurrentMood <= 100)
 		{
-
+			_spriteRenderer.sprite = AnimationManager.Instance.GetTreeSprite( TreeID, 4);
 		}
 	}
 

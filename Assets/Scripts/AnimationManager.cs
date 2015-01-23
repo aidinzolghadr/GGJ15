@@ -17,9 +17,9 @@ public class AnimationManager : MonoBehaviour
 		_trees = Resources.LoadAll<Sprite>("trees");
 	}
 
-	public Sprite GetTreeOfThisIndexOfThisMoodValue (int treeID, int currentMood)
+	public Sprite GetTreeSprite (int treeID, int frame)
 	{
-		return _trees [9];
+		return _trees[ (treeID * 5) + frame];
 	}
 
 	// Use this for initialization

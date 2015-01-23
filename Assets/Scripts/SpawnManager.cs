@@ -29,10 +29,10 @@ public class SpawnManager : MonoBehaviour
 
 	public Wave[] EasyWaves = new Wave[]
 	{
-		/* 0 */	new Wave { Positions =	new int[] {0},	MoodMin =  30,	MoodMax = 50},
-//		/* 1 */	new Wave { Positions =	new int[] {2, 3},	MoodMin =  35,	MoodMax = 50},
-//		/* 2 */	new Wave { Positions =	new int[] {0, 5},	MoodMin =  40,	MoodMax = 50},
-//		/* 3 */	new Wave { Positions =	new int[] {1, 6},	MoodMin =  20,	MoodMax = 50},
+		/* 0 */	new Wave { Positions =	new int[] {0, 2},	MoodMin =  30,	MoodMax = 50},
+		/* 1 */	new Wave { Positions =	new int[] {2, 3},	MoodMin =  35,	MoodMax = 50},
+		/* 2 */	new Wave { Positions =	new int[] {0, 5},	MoodMin =  40,	MoodMax = 50},
+		/* 3 */	new Wave { Positions =	new int[] {1, 6},	MoodMin =  20,	MoodMax = 50},
 
 	};
 
