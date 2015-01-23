@@ -71,6 +71,7 @@ public class RotateAround : MonoBehaviour
 				if (RotationSpeed > 0)
 					RotationSpeed = 0;
 			}
+
 //			RotationSpeed 
 		}
 

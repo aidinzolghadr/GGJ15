@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class SpawnManager : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class SpawnManager : MonoBehaviour
 	public int NumOfMediumWavesCreated;
 	public int NumOfHardWavesCreated;
 
+	private int[] LoadedTreeIDsForThisWave;
 
 	// TODO: Tutorial wave
 
@@ -27,10 +29,10 @@ public class SpawnManager : MonoBehaviour
 
 	public Wave[] EasyWaves = new Wave[]
 	{
-		/* 0 */	new Wave { Positions =	new int[] {0, 1},	MoodMin =  30,	MoodMax = 50},
-		/* 1 */	new Wave { Positions =	new int[] {2, 3},	MoodMin =  35,	MoodMax = 50},
-		/* 2 */	new Wave { Positions =	new int[] {0, 5},	MoodMin =  40,	MoodMax = 50},
-		/* 3 */	new Wave { Positions =	new int[] {1, 6},	MoodMin =  20,	MoodMax = 50},
+		/* 0 */	new Wave { Positions =	new int[] {0},	MoodMin =  30,	MoodMax = 50},
+//		/* 1 */	new Wave { Positions =	new int[] {2, 3},	MoodMin =  35,	MoodMax = 50},
+//		/* 2 */	new Wave { Positions =	new int[] {0, 5},	MoodMin =  40,	MoodMax = 50},
+//		/* 3 */	new Wave { Positions =	new int[] {1, 6},	MoodMin =  20,	MoodMax = 50},
 
 	};
 
@@ -59,6 +61,8 @@ public class SpawnManager : MonoBehaviour
 	public int HardWaveIndexStarterNumber 	= 3;
 
 	public const int MinimumAcceptableMood = 60;
+
+
 
 	void disableAllPlanets ()
 	{
@@ -139,6 +143,8 @@ public class SpawnManager : MonoBehaviour
 			//			Debug.Log("CurrentWave HardWaves#: " + randomWave);
 			NumOfHardWavesCreated = NumOfHardWavesCreated + 1;
 		}
+
+		// Selecting a Medium wave
 		else if (die <= MediumWaveChance)
 		{
 			int randomWave = Random.Range(0, MediumWaves.Length);
@@ -147,6 +153,8 @@ public class SpawnManager : MonoBehaviour
 			//			Debug.Log("CurrentWave MediumWaves#: " + randomWave);
 			NumOfMediumWavesCreated = NumOfMediumWavesCreated + 1;
 		}
+
+		// Selecting an Easy wave
 		else
 		{
 			int randomWave = Random.Range(0, EasyWaves.Length);
@@ -156,26 +164,14 @@ public class SpawnManager : MonoBehaviour
 			NumOfEasyWavesCreated = NumOfEasyWavesCreated + 1;
 		}
 
-		// Selecting a Medium wave
-		if (die <= MediumWaveChance + HardWaveChance)
-		{
-
-		}
-
-		// Selecting a Hard wave
-		else if (die <= MediumWaveChance)
-		{
-
-		}
-
-
-		// Selecting an Easy wave
-		else
-		{
-
-		}
-
 		// Applying new wave
+
+		List<int> TreesID = new List<int>();
+
+		for (int i = 0; i < 7; i++)
+			TreesID.Add(i);
+
+
 
 		for (int i = 0; i < Planets.Length; i++)
 		{
@@ -184,6 +180,11 @@ public class SpawnManager : MonoBehaviour
 				Planets[i].CurrentMood = Random.Range(CurrentWave.MoodMin, CurrentWave.MoodMax);
 				Planets[i].ResetMoodMultiplier();
 				Planets[i].gameObject.SetActive(true);
+
+
+				int id = Random.Range(0, TreesID.Count);
+				TreesID.Remove(id);
+				Planets[i].TreeID = id;
 			}
 			else
 			    Planets[i].gameObject.SetActive(false);
