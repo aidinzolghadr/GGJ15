@@ -20,7 +20,7 @@ public class AnimationManager : MonoBehaviour
 	public Sprite GetTreeSprite (int treeID, int frame)
 	{
 		int calculatedFrame = (treeID * 5) + frame;
-		Debug.Log("loading tree frame: " + calculatedFrame);
+//		Debug.Log("loading tree frame: " + calculatedFrame);
 		return _trees[ calculatedFrame ];
 	}
 

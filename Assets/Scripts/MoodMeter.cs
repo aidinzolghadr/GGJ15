@@ -6,8 +6,8 @@ public class MoodMeter : MonoBehaviour
 	public float MaxMood = 100;
 	public float CurrentMood = 40;
 
-	private float MoodDelta = -1;
-	private GUIText _myGUItext;
+	protected float MoodDelta = -1;
+	protected GUIText _myGUItext;
 
 //	private float _maxScale = 0.45f;
 //	private float _minScale = 0.15f;
@@ -18,12 +18,12 @@ public class MoodMeter : MonoBehaviour
 
 	public int TreeID;
 
-	public void IncreaseMood ()
+	public virtual void IncreaseMood ()
 	{
 		MoodDelta = SpawnManager.Instance.MoodIncreaseAmountPerSecond;
 	}
 
-	public void ResetMoodMultiplier ( )
+	public virtual void ResetMoodMultiplier ( )
 	{
 		MoodDelta = SpawnManager.Instance.MoodDecrementPerSecond;
 	}
@@ -73,12 +73,12 @@ public class MoodMeter : MonoBehaviour
 		_spriteRenderer = GetComponent<SpriteRenderer>();
 	}
 
-	void Start ()
+	protected virtual void Start ()
 	{
 		ResetMoodMultiplier();
 	}
 
-	void Update ()
+	protected virtual void Update ()
 	{
 		UpdateMood();
 		updateArtBasedOnMood();

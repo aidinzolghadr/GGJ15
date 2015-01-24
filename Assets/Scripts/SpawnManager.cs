@@ -226,7 +226,7 @@ public class SpawnManager : MonoBehaviour
 
 		float die = Random.value;
 
-		Debug.Log(die);
+//		Debug.Log(die);
 
 		float EasyWaveChance = 1 - (MediumWaveChance + HardWaveChance);
 		MediumWaveChance += HardWaveChance;
