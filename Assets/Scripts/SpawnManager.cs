@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -11,11 +12,20 @@ public class SpawnManager : MonoBehaviour
 	public float MoodIncreaseAmountPerSecond = 3;
 	public float MoodDecrementPerSecond = -1;
 
+	public int MaxNumOfAcceptableDeadTrees;
+
 	public int NumOfEasyWavesCreated;
 	public int NumOfMediumWavesCreated;
 	public int NumOfHardWavesCreated;
 
 	private int[] LoadedTreeIDsForThisWave;
+
+	private bool isGameOver = false;
+
+	public Canvas GameOverCanvase;
+
+	public Text SavedTreeText;
+	public int NumOfSavedTrees = 0;
 
 	// TODO: Tutorial wave
 
@@ -29,26 +39,26 @@ public class SpawnManager : MonoBehaviour
 
 	public Wave[] EasyWaves = new Wave[]
 	{
-		/* 0 */		new Wave { Positions =	new int[] {1, 2},		MoodMin =  30,	MoodMax = 50},
-		/* 1 */		new Wave { Positions =	new int[] {2, 3},		MoodMin =  30,	MoodMax = 50},
-		/* 2 */		new Wave { Positions =	new int[] {3, 4},		MoodMin =  30,	MoodMax = 50},
-		/* 3 */		new Wave { Positions =	new int[] {4, 5},		MoodMin =  30,	MoodMax = 50},
-		/* 4 */		new Wave { Positions =	new int[] {5, 6},		MoodMin =  30,	MoodMax = 50},
-		/* 5 */		new Wave { Positions =	new int[] {6, 7},		MoodMin =  30,	MoodMax = 50},
-		/* 6 */		new Wave { Positions =	new int[] {7, 0},		MoodMin =  30,	MoodMax = 50},
-		/* 7 */		new Wave { Positions =	new int[] {1, 2, 3},	MoodMin =  45,	MoodMax = 50},
-		/* 8 */		new Wave { Positions =	new int[] {2, 3, 4},	MoodMin =  45,	MoodMax = 50},
-		/* 9 */		new Wave { Positions =	new int[] {3, 4, 5},	MoodMin =  45,	MoodMax = 50},
-		/* 10 */	new Wave { Positions =	new int[] {5, 6, 7},	MoodMin =  45,	MoodMax = 50},
-		/* 11 */	new Wave { Positions =	new int[] {6, 7, 0},	MoodMin =  45,	MoodMax = 50},
-		/* 12 */	new Wave { Positions =	new int[] {7, 0, 1},	MoodMin =  45,	MoodMax = 50},
-		/* 13 */	new Wave { Positions =	new int[] {1},			MoodMin =  20,	MoodMax = 50},
-		/* 14 */	new Wave { Positions =	new int[] {2},			MoodMin =  20,	MoodMax = 50},
-		/* 15 */	new Wave { Positions =	new int[] {3},			MoodMin =  20,	MoodMax = 50},
-		/* 16 */	new Wave { Positions =	new int[] {4},			MoodMin =  20,	MoodMax = 50},
-		/* 17 */	new Wave { Positions =	new int[] {5},			MoodMin =  20,	MoodMax = 50},
-		/* 18 */	new Wave { Positions =	new int[] {6},			MoodMin =  20,	MoodMax = 50},
-		/* 19 */	new Wave { Positions =	new int[] {7},			MoodMin =  20,	MoodMax = 50},
+		/* 0 */		new Wave { Positions =	new int[] {1, 2},			MoodMin =  30,	MoodMax = 50},
+		/* 1 */		new Wave { Positions =	new int[] {2, 3},			MoodMin =  30,	MoodMax = 50},
+		/* 2 */		new Wave { Positions =	new int[] {3, 4},			MoodMin =  30,	MoodMax = 50},
+		/* 3 */		new Wave { Positions =	new int[] {4, 5},			MoodMin =  30,	MoodMax = 50},
+		/* 4 */		new Wave { Positions =	new int[] {5, 6},			MoodMin =  30,	MoodMax = 50},
+		/* 5 */		new Wave { Positions =	new int[] {6, 7},			MoodMin =  30,	MoodMax = 50},
+		/* 6 */		new Wave { Positions =	new int[] {7, 0},			MoodMin =  30,	MoodMax = 50},
+		/* 7 */		new Wave { Positions =	new int[] {1, 2, 	3},		MoodMin =  45,	MoodMax = 50},
+		/* 8 */		new Wave { Positions =	new int[] {2, 3, 	4},		MoodMin =  45,	MoodMax = 50},
+		/* 9 */		new Wave { Positions =	new int[] {3, 4, 	5},		MoodMin =  45,	MoodMax = 50},
+		/* 10 */	new Wave { Positions =	new int[] {5, 6, 	7},		MoodMin =  45,	MoodMax = 50},
+		/* 11 */	new Wave { Positions =	new int[] {6, 7, 	0},		MoodMin =  45,	MoodMax = 50},
+		/* 12 */	new Wave { Positions =	new int[] {7, 0, 	1},		MoodMin =  45,	MoodMax = 50},
+		/* 13 */	new Wave { Positions =	new int[] {1},				MoodMin =  20,	MoodMax = 50},
+		/* 14 */	new Wave { Positions =	new int[] {2},				MoodMin =  20,	MoodMax = 50},
+		/* 15 */	new Wave { Positions =	new int[] {3},				MoodMin =  20,	MoodMax = 50},
+		/* 16 */	new Wave { Positions =	new int[] {4},				MoodMin =  20,	MoodMax = 50},
+		/* 17 */	new Wave { Positions =	new int[] {5},				MoodMin =  20,	MoodMax = 50},
+		/* 18 */	new Wave { Positions =	new int[] {6},				MoodMin =  20,	MoodMax = 50},
+		/* 19 */	new Wave { Positions =	new int[] {7},				MoodMin =  20,	MoodMax = 50},
 	};
 	
 	public Wave[] MediumWaves = new Wave[]
@@ -169,7 +179,7 @@ public class SpawnManager : MonoBehaviour
 
 	public const int MinimumAcceptableMood = 60;
 
-
+	//========================================================================================================================
 
 	void disableAllPlanets ()
 	{
@@ -178,6 +188,8 @@ public class SpawnManager : MonoBehaviour
 			Planets[i].gameObject.SetActive(false);
 		}
 	}
+
+	//========================================================================================================================
 
 	bool isCurrentWaveClear ()
 	{
@@ -193,6 +205,8 @@ public class SpawnManager : MonoBehaviour
 		return true;
 	}
 
+	//========================================================================================================================
+
 	bool doesCurrentWaveHaveMe(int planetIndex)
 	{
 		for (int i = 0; i < CurrentWave.Positions.Length; i++)
@@ -204,8 +218,20 @@ public class SpawnManager : MonoBehaviour
 		return false;
 	}
 
+	public void LoadMenu()
+	{
+		Application.LoadLevel("MainMenuWithTutorial");
+	}
+
+	//========================================================================================================================
+
 	void LoadNextWave()
 	{
+		// Giving score as number of saved trees
+		if (WaveIndex > 0)
+			NumOfSavedTrees += CurrentWave.Positions.Length;
+
+		// advancing to next wave
 		++WaveIndex;
 
 //		Debug.Log("Loading wave#: " + WaveIndex);
@@ -299,14 +325,56 @@ public class SpawnManager : MonoBehaviour
 
 	}
 
+	//========================================================================================================================
+
+	bool checkIfGameIsOver ()
+	{
+		int deadTrees = 0;
+
+		for (int i = 0; i < Planets.Length; i++)
+		{
+			if (Planets[i].CurrentMood <= 0)
+				deadTrees = deadTrees + 1;
+		}
+
+		if (deadTrees >= MaxNumOfAcceptableDeadTrees)
+			return true;
+		else
+			return false;
+	}
+
+	//========================================================================================================================
+
+	void DisplayGameOver ()
+	{
+		// Delete Sun
+		GameObject.FindGameObjectWithTag("Sun").SetActive(false);
+
+		// Delete Trees
+		for (int i = 0; i < Planets.Length; i++)
+		{
+			Planets[i].gameObject.SetActive(false);
+		}
+
+		// Display game over canvas summary
+		GameOverCanvase.gameObject.SetActive(true);
+		SavedTreeText.text = ": " + NumOfSavedTrees.ToString() + " Saved.";
+
+	}
+
+	//========================================================================================================================
+
 	void Awake()
 	{
 		// Singleton
 		instance = this;
 	}
 
+	//========================================================================================================================
+
 	void Start ()
 	{
+		GameOverCanvase.gameObject.SetActive(false);
 		disableAllPlanets();
 
 		/*
@@ -321,14 +389,22 @@ public class SpawnManager : MonoBehaviour
 		*/
 
 	}
-	
+
+	//========================================================================================================================
+
 	void Update ()
 	{
-
-		if (isCurrentWaveClear())
+		if (!isGameOver)
 		{
-			LoadNextWave();
+			if (isCurrentWaveClear())
+			{
+				LoadNextWave();
+			}
+			else if (checkIfGameIsOver())
+			{
+				isGameOver = true;
+				DisplayGameOver();
+			}
 		}
-		
 	}
 }
