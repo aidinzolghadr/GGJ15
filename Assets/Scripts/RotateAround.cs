@@ -20,6 +20,15 @@ public class RotateAround : MonoBehaviour
 		}
 	}
 
+	void OnTriggerStay2D (Collider2D other)
+	{
+		if (other.tag == "Planet")
+		{
+			other.gameObject.GetComponent<MoodMeter>().IncreaseMood();
+		}
+	}
+
+
 	void OnTriggerExit2D (Collider2D other)
 	{
 		if (other.tag == "Planet")
