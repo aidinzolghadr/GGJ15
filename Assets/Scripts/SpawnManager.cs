@@ -177,7 +177,7 @@ public class SpawnManager : MonoBehaviour
 	public int MediumWaveIndexStarterNumber = 1;
 	public int HardWaveIndexStarterNumber 	= 3;
 
-	public const int MinimumAcceptableMood = 60;
+	public int MinimumAcceptableMood = 60;
 
 	//========================================================================================================================
 
